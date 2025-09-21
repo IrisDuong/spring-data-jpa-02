@@ -1,0 +1,29 @@
+version:  "3.8"
+services:
+  springjpa02-mysql-server:
+    image: mysql:8
+    container_name: springjpa02-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: spring-data-jpa-02
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345
+    ports:
+      - "3306:3306"
+    networks:
+      - springjpa02-network
+  springjpa02-app:
+    build: .
+    container_name: springjpa02-app
+    depends_on:
+      - springjpa02-mysql-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://springjpa02-mysql-server:3306/spring-data-jpa-02
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345
+    ports:
+      - "8080:8080"
+    networks:
+      - springjpa02-network
+networks:
+  springjpa02-network:
